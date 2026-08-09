@@ -4,6 +4,7 @@ from .parking import (
     generate_parking_lots,
     generate_parking_slots,
 )
+from .reservations import generate_reservations
 
 
 def main() -> None:
@@ -87,6 +88,27 @@ def main() -> None:
     assert len(events) == expected_events
     assert all(event.slot_id > 0 for event in events)
 
+    reservations = generate_reservations(
+        slots,
+        config,
+    )
+
+    print(f"\nReservations:")
+    print(f"Generated reservations: {len(reservations)}")
+
+    print("\nFirst five reservations:")
+    for reservation in reservations[:5]:
+        print(reservation)
+
+    assert all(
+        reservation.start_time < reservation.end_time
+        for reservation in reservations
+    )
+
+    assert all(
+        reservation.slot_id in {slot.id for slot in slots}
+        for reservation in reservations
+    )
 
 if __name__ == "__main__":
     main()
