@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: smart-parking-oltp
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: smart_parking
+      POSTGRES_USER: parking
+      POSTGRES_PASSWORD: parking_dev
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U parking -d smart_parking"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  warehouse:
+    image: postgres:18
+    container_name: smart-parking-dwh
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: parking_dw
+      POSTGRES_USER: warehouse
+      POSTGRES_PASSWORD: warehouse_dev
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - warehouse_data:/var/lib/postgresql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U warehouse -d parking_dw"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  warehouse_data:
