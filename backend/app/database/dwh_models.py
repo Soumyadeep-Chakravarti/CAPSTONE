@@ -1,5 +1,21 @@
-from sqlalchemy.orm import DeclarativeBase
+from .dwh.base import DWHBase
+from .dwh.models import (
+    DimDate,
+    DimParkingLot,
+    DimParkingSlot,
+    DimTime,
+    DimVehicleType,
+    FactOccupancy,
+    FactReservation,
+)
 
-
-class DWHBase(DeclarativeBase):
-    pass
+__all__ = [
+    "DWHBase",
+    "DimDate",
+    "DimTime",
+    "DimParkingLot",
+    "DimParkingSlot",
+    "DimVehicleType",
+    "FactOccupancy",
+    "FactReservation",
+]
